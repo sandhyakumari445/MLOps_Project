@@ -46,14 +46,59 @@ class ModelTrainer:
                 "Decision_Tree": DecisionTreeRegressor(),
                 "Gradient_Boosting": GradientBoostingRegressor(),
                 "Linear_Regression": LinearRegression(),
-                "K-Neighbour_Regressor": KNeighborsRegressor(),
+                #"K-Neighbour_Regressor": KNeighborsRegressor(),
                 "XGBRegressor": XGBRFRegressor(),
-                "Catboosting_Regressor": CatBoostRegressor(),
+                "Catboosting_Regressor": CatBoostRegressor(verbose=False),
                 "Adaboost_Regressor": AdaBoostRegressor()
 
             }   
+
+            params={
+
+                "Decision_Tree": {
+                    'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
+                    #'splitter':['best', 'random'],
+                    #'max_features':['sqrt','log2'],
+                },
+
+                "Random_Forest": {
+                    #'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
+                    #'splitter':['best', 'random'],
+                    #'max_features':['sqrt','log2'],
+                    'n_estimators': [8,16,32,64,128,256]
+                },
+
+                "Gradient_Boosting": {
+                    'learning_rate':[.1,.01,.05,.001],
+                    'subsample':[0.6,0.7,0.75,0.8,0.85,0.9],
+                    #'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
+                    #'splitter':['best', 'random'],
+                    #'max_features':['sqrt','log2'],
+                    'n_estimators': [8,16,32,64,128,256]
+                },
+
+                "Linear_Regression": {},
+
+                "XGBRegressor": {
+                    'learning_rate':[.1,.01,.05,.001],
+                    'n_estimators': [8,16,32,64,128,256]
+                },
+
+                "Catboosting_Regressor": {
+                     'depth': [6,8,10],
+                    'learning_rate': [0.01, 0.05, 0.1],
+                    'iterations': [30, 50, 100]
+                },
+
+                "Adaboost_Regressor": {
+                    'learning_rate':[.1,.01,.05,.001],
+                    'n_estimators': [8,16,32,64,128,256]
+                }
+
+            }
+
             model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,
-                                              models=models)
+                                              models=models,params=params)
 
             best_model_score= max(sorted(model_report.values()))
 
@@ -62,9 +107,7 @@ class ModelTrainer:
             ]
 
             best_model=models[best_model_name]
-
-
-        
+       
             if best_model_score<0.6:
                 raise CustomException("No best model found")
             logging.info(f"Best model found on training and testing datasets")
