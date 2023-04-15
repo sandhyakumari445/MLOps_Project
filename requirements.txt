@@ -8,4 +8,5 @@ xgboost
 dill
 pickle
 Flask
+flask_cors
 #-e .
