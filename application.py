@@ -33,8 +33,7 @@ def predict_datapoint():
         ) 
 
         pred_df=data.get_data_as_frame()
-        print(pred_df)
-        print("Before Prediction")
+        
 
         predict_pipeline=PredictPipeline()
         results=predict_pipeline.predict(pred_df)
