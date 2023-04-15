@@ -6,7 +6,6 @@ scikit-learn
 catboost
 xgboost
 dill
-pickle
 Flask
 flask_cors
 #-e .
